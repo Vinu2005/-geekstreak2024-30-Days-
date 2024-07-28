@@ -1,0 +1,41 @@
+Remove Duplicates
+Difficulty: EasyAccuracy: 52.35%Submissions: 126K+Points: 2
+Given a string str without spaces, the task is to remove all duplicate characters from it, keeping only the first occurrence.
+
+Note: The original order of characters must be kept the same. 
+
+Examples :
+
+Input: str = "zvvo"
+Output: "zvo"
+Explanation: Only keep the first occurrence
+Input: str = "gfg"
+Output: "gf"
+Explanation: Only keep the first occurrence
+Expected Time Complexity: O(n)
+Expected Auxiliary Space: O(1)
+
+Constraints:
+1 <= |str| <= 105
+str contains lowercase English alphabets
+
+class Solution:
+	def removeDups(self, str):
+	    # Initialize a list to keep track of the presence of each character
+        isPresent = [False] * 26
+        # Initialize an empty string to store the result
+        ans = ""
+    
+        # Iterate through each character in the input string
+        for val in str:
+            # Convert the character to its corresponding index (0-25)
+            i = ord(val) - ord("a")
+            # Check if the character has already been encountered
+            if not isPresent[i]:
+                # If not, append the character to the result string
+                ans += val
+                # Mark the character as encountered
+                isPresent[i] = True
+    
+        # Return the result string with duplicates removed
+        return ans

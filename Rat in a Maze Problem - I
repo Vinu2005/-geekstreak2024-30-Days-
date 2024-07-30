@@ -1,0 +1,65 @@
+Rat in a Maze Problem - I
+Difficulty: MediumAccuracy: 35.75%Submissions: 266K+Points: 4
+Consider a rat placed at (0, 0) in a square matrix mat of order n* n. It has to reach the destination at (n - 1, n - 1). Find all possible paths that the rat can take to reach from source to destination. The directions in which the rat can move are 'U'(up), 'D'(down), 'L' (left), 'R' (right). Value 0 at a cell in the matrix represents that it is blocked and rat cannot move to it while value 1 at a cell in the matrix represents that rat can be travel through it.
+Note: In a path, no cell can be visited more than one time. If the source cell is 0, the rat cannot move to any other cell. In case of no path, return an empty list. The driver will output "-1" automatically.
+
+Examples:
+
+Input: mat[][] = [[1, 0, 0, 0],
+                [1, 1, 0, 1], 
+                [1, 1, 0, 0],
+                [0, 1, 1, 1]]
+Output: DDRDRR DRDDRR
+Explanation: The rat can reach the destination at (3, 3) from (0, 0) by two paths - DRDDRR and DDRDRR, when printed in sorted order we get DDRDRR DRDDRR.
+Input: mat[][] = [[1, 0],
+                [1, 0]]
+Output: -1
+Explanation: No path exists and destination cell is blocked.
+Expected Time Complexity: O(3n^2)
+Expected Auxiliary Space: O(l * x)
+Here l = length of the path, x = number of paths.
+
+Constraints:
+2 ≤ n ≤ 5
+0 ≤ mat[i][j] ≤ 1
+
+from typing import List
+
+class Solution:
+    def findPath(self, m: List[List[int]]) -> List[str]:
+        n = len(m)
+        
+        # If the start or end point is blocked, return an empty list
+        if m[0][0] == 0 or m[n-1][n-1] == 0:
+            return []
+
+        # Depth-First Search (DFS) function to find paths
+        def dfs(x, y, path, paths):
+            # If the destination is reached, add the path to the result list
+            if x == n - 1 and y == n - 1:
+                paths.append(path)
+                return
+
+            # Mark the current cell as visited by setting it to 0
+            m[x][y] = 0
+
+            # Define possible directions to move: Down, Left, Right, Up
+            directions = [('D', 1, 0), ('L', 0, -1), ('R', 0, 1), ('U', -1, 0)]
+
+            # Explore each direction
+            for dir in directions:
+                move, dx, dy = dir
+                nx, ny = x + dx, y + dy
+
+                # Check if the next cell is within bounds and not visited
+                if 0 <= nx < n and 0 <= ny < n and m[nx][ny] == 1:
+                    dfs(nx, ny, path + move, paths)
+
+            # Unmark the cell (backtracking) to allow other paths to explore it
+            m[x][y] = 1
+
+        paths = []
+        # Start DFS from the top-left corner of the grid
+        dfs(0, 0, '', paths)
+        # Return the sorted list of paths
+        return sorted(paths)

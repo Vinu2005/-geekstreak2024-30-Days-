@@ -1,0 +1,55 @@
+Edit Distance
+Difficulty: HardAccuracy: 35.14%Submissions: 206K+Points: 8
+Given two strings str1 and str2. Return the minimum number of operations required to convert str1 to str2.
+The possible operations are permitted:
+
+Insert a character at any position of the string.
+Remove any character from the string.
+Replace any character from the string with any other character.
+Examples:
+
+Input: str1 = "geek", srt2 = "gesek"
+Output: 1
+Explanation: One operation is required, inserting 's' between two 'e'.
+Input : str1 = "gfg", str2 = "gfg"
+Output: 0
+Explanation: Both strings are same.
+Expected Time Complexity: O(|str1|*|str2|)
+Expected Space Complexity: O(|str1|*|str2|)
+
+Constraints:
+1 ≤ str1.length(), str2.length() ≤ 100
+Both the strings are in lowercase.
+
+class Solution:
+	def editDistance(self, str1, str3):
+	    m = len(str1)
+        n = len(str3)
+
+        # Create a 2D array to store results of subproblems
+        dp = [[0 for _ in range(n + 1)] for _ in range(m + 1)]
+
+        # Fill dp[][] in bottom up manner
+        for i in range(m + 1):
+            for j in range(n + 1):
+
+                # If first string is empty, the only option is to insert all characters of the second string
+                if i == 0:
+                    dp[i][j] = j
+
+                # If second string is empty, the only option is to remove all characters of the first string
+                elif j == 0:
+                    dp[i][j] = i
+
+                # If last characters are the same, ignore the last character and recur for the remaining substring
+                elif str1[i - 1] == str3[j - 1]:
+                    dp[i][j] = dp[i - 1][j - 1]
+
+                # If last character is different, consider all possibilities and find the minimum
+                else:
+                    dp[i][j] = 1 + min(dp[i][j - 1],    # Insert
+                                       dp[i - 1][j],    # Remove
+                                       dp[i - 1][j - 1]) # Replace
+
+        return dp[m][n]
+

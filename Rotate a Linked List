@@ -1,0 +1,71 @@
+Rotate a Linked List
+Difficulty: MediumAccuracy: 39.95%Submissions: 237K+Points: 4
+Given the head of a singly linked list, the task is to rotate the linked list anti-clockwise by k nodes, i.e., left-shift the linked list by k nodes, where k is a given positive integer smaller than or equal to length of the linked list.
+
+Examples:
+
+Input: linkedlist: 2->4->7->8->9 , k = 3
+Output: 8->9->2->4->7
+Explanation:
+Rotate 1: 4 -> 7 -> 8 -> 9 -> 2
+Rotate 2: 7 -> 8 -> 9 -> 2 -> 4
+Rotate 3: 8 -> 9 -> 2 -> 4 -> 7
+
+Input: linkedlist: 1->2->3->4->5->6->7->8 , k = 4
+Output: 5->6->7->8->1->2->3->4
+
+Expected Time Complexity: O(n)
+Expected Auxiliary Space: O(1)
+
+Constraints:
+1 <= number of nodes <= 103
+1 <= node -> data <= 104
+1 <= k <= number of nodes 
+
+'''
+
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.next = None
+
+'''
+
+
+class Solution:
+    
+    #Function to rotate a linked list.
+    def rotate(self, head, k):
+        if not head or k == 0:
+            return head
+        
+        # Calculate the length of the linked list
+        current = head
+        length = 1
+        while current.next:
+            current = current.next
+            length += 1
+        
+        # If k >= length, reduce it by mod operation
+        k = k % length
+        if k == 0:
+            return head
+        
+        # Traverse the list again to find the (k+1)th node
+        current = head
+        for i in range(k - 1):
+            current = current.next
+        
+        # The kth node will be the new tail
+        new_head = current.next
+        current.next = None
+        
+        # Traverse to the end of the new list
+        current = new_head
+        while current.next:
+            current = current.next
+        
+        # Connect the last node to the original head
+        current.next = head
+        
+        return new_head

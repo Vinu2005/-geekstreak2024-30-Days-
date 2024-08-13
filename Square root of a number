@@ -1,0 +1,43 @@
+Square root of a number
+Difficulty: EasyAccuracy: 54.03%Submissions: 235K+Points: 2
+Given an integer n, find the square root of n. If n is not a perfect square, then return the floor value.
+
+Floor value of any number is the greatest Integer which is less than or equal to that number
+
+Examples:
+
+Input: n = 5
+Output: 2
+Explanation: Since, 5 is not a perfect square, floor of square_root of 5 is 2.
+Input: n = 4
+Output: 2
+Explanation: Since, 4 is a perfect square, so its square root is 2.
+Expected Time Complexity: O(logn)
+Expected Auxiliary Space: O(1)
+
+Constraints:
+1 ≤ n ≤ 10^7
+
+class Solution:
+    def floorSqrt(self, n):
+        if n == 0 or n == 1:
+            return n
+        
+        low, high = 1, n
+        ans = 0
+        
+        while low <= high:
+            mid = (low + high) // 2
+            
+            # Check if mid is the perfect square root
+            if mid * mid == n:
+                return mid
+            
+            # If mid*mid is less than n, discard the lower half
+            if mid * mid < n:
+                low = mid + 1
+                ans = mid  # update the floor value
+            else:
+                high = mid - 1
+        
+        return ans
